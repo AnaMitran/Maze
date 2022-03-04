@@ -14,6 +14,9 @@ Cum fac asta? Ma ghidez dupa busola, adica dupa punctele cardinale (N, V, S, E) 
 
 Stiind coordonatele punctului de start, voi putea sa imi determin noua pozitie in care m-am mutat, dupa directia X, intrucat incrementez sau decrementez linia sau coloana astfel:
 Pot porni inspre orice directie, insa pentru o buna practica pentru parcurgerea ulterioara a labirintului aleg urmatoarea directie in sens trigonometric.
+
+![image](https://user-images.githubusercontent.com/89164540/156738965-519bd825-10ef-4821-89d4-f1eef2d61f6f.png)
+
 De ce in sens trigonometric? Pentru ca astfel, dupa ce ies dintre cei 3 pereti, prioritizez verificarea valorii din dreapta, adica a existentei peretelui in dreapta. Daca am perete in dreapta, voi verifica in fata mea. In cazul in care in fata am un perete, verific daca pot iesi prin stanga si de-abia daca si atunci descopar ca am un perete si nu un culoar, ma intorc pe unde am venit, pentru ca este o fundatura.
 Pentru a verifica ce exista in dreapta, aleg directia anterioara directiei de deplasare „in fata”.
 Sagetile negre indica directia de deplasare. De fiecare data cand descopar un perete, ma intorc la pozitia atenrioara, adica pe directia inversa de deplasare. Sagetile galbene indica sensul trigonometric de alegere a urmatoarei directii (S – E – N – W).
