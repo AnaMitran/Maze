@@ -1,11 +1,11 @@
 module maze(
-	input 		          	        clk,
+	input 		          	clk,
 	input       [maze_width - 1:0]  starting_col, starting_row, // indicii punctului de start
-	input  			  				     maze_in, 							// ofera informatii despre punctul de coordonate [row, col]
-	output reg  [maze_width - 1:0]  row, col,	 						// selecteaza un r‚nd si o coloana din labirint
-	output reg			  				  maze_oe,							// output enable (activeaza citirea din labirint la r‚ndul si coloana date) - semnal sincron	
-	output reg			  				  maze_we, 							// write enable (activeaza scrierea Ón labirint la r‚ndul si coloana date) - semnal sincron
-	output reg			  				  done);		 						// iesirea din labirint a fost gasita; semnalul ramane activ 
+	input  			  	maze_in, 		    // ofera informatii despre punctul de coordonate [row, col]
+	output reg  [maze_width - 1:0]  row, col,	 	    // selecteaza un r√¢nd si o coloana din labirint
+	output reg			maze_oe,		    // output enable (activeaza citirea din labirint la r√¢ndul si coloana date) - semnal sincron	
+	output reg			maze_we, 		    // write enable (activeaza scrierea √Æn labirint la r√¢ndul si coloana date) - semnal sincron
+	output reg			done);		 	    // iesirea din labirint a fost gasita; semnalul ramane activ 
 	
 	parameter maze_width = 6; //maze de 64x64 cu indicii 0...63
 	
