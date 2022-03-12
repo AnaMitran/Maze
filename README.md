@@ -9,28 +9,54 @@ Implementarea nu poate fi de tip brute force prin parcurgerea intregii matrici c
 
 Initial in labirint, scenariul arata asemanator cu:
 
+![image](https://user-images.githubusercontent.com/89164540/157997870-bce2bdbb-0bed-43e8-a3a2-d6294e46a2b8.png)
+
+
 Primul task al meu este sa gasesc iesirea dintre cei 3 pereti.
 Cum fac asta? Ma ghidez dupa busola, adica dupa punctele cardinale (N, V, S, E) si retin de fiecare data directia in care m-am deplasat.
 
 Stiind coordonatele punctului de start, voi putea sa imi determin noua pozitie in care m-am mutat, dupa directia X, intrucat incrementez sau decrementez linia sau coloana astfel:
+
+![image](https://user-images.githubusercontent.com/89164540/157997881-a72f2842-bc87-401c-87c3-4b3dd08abb63.png)
+
+
 Pot porni inspre orice directie, insa pentru o buna practica pentru parcurgerea ulterioara a labirintului aleg urmatoarea directie in sens trigonometric.
 
 ![image](https://user-images.githubusercontent.com/89164540/156738965-519bd825-10ef-4821-89d4-f1eef2d61f6f.png)
 
 De ce in sens trigonometric? Pentru ca astfel, dupa ce ies dintre cei 3 pereti, prioritizez verificarea valorii din dreapta, adica a existentei peretelui in dreapta. Daca am perete in dreapta, voi verifica in fata mea. In cazul in care in fata am un perete, verific daca pot iesi prin stanga si de-abia daca si atunci descopar ca am un perete si nu un culoar, ma intorc pe unde am venit, pentru ca este o fundatura.
+
 Pentru a verifica ce exista in dreapta, aleg directia anterioara directiei de deplasare „in fata”.
+
+![image](https://user-images.githubusercontent.com/89164540/157997908-d4c70533-602d-490c-8ea0-371e199a3f1a.png)
+
+
 Sagetile negre indica directia de deplasare. De fiecare data cand descopar un perete, ma intorc la pozitia atenrioara, adica pe directia inversa de deplasare. Sagetile galbene indica sensul trigonometric de alegere a urmatoarei directii (S – E – N – W).
 Pentru a ma intoarce ma folosesc de regulile de schimbare a coordonatelor, prezentate mai sus si nu schimb efectiv directia, decat in sens trigonometric sau aleg directia anterioara pentru a verifica peretele in dreapta.
 In cazul in care in dreapta mea nu am peretele inseamna ca am trecut pe langa un colt din labirint. Totusi acest caz este similar cu situatia iesirii dintre primii 3 pereti.
 
+![image](https://user-images.githubusercontent.com/89164540/157997921-f371be59-a32f-455e-8eda-967402416639.png)
+
+
 Logica de implementare:
+
+![image](https://user-images.githubusercontent.com/89164540/157997935-e3d79856-9d11-495b-9ef2-69209918ebaf.png)
+
+
 Automatul finit determinist este de tip Moore (iesirea pe stare - aflu mereu informatia utila sau pot face modificari asupra labirintului doar la pasul urmator = urmatorul front crescator de ceas). Circuitul este de tip secvential sincron, cu parte combinationala de prelucrare/setare a datelor.
+
 Modulul are urmatoarea structura:
+
+![image](https://user-images.githubusercontent.com/89164540/157997948-284d8ddc-1f22-42a4-a100-97b7347e586b.png)
+
 In fiecare stare, pot modifica fie maze_we pentru scriere in labirint, fie maze_oe pentru citire din labirint.
-set : starea de pornire, salvez coordonatele punctului de start, setez o directie initiala de deplasare si permit marcarea drumului in labirint prin maze_we = 1
-update : modific coordonatele pozitiei indicate de directia anterior aleasa si permit citirea valorii inregistrare in aceasta pozitie prin maze_oe = 1
-check : pot verifica valoarea pozitiei in care ma aflu (in maze_in), daca am descoperit :
+
+**set** : starea de pornire, salvez coordonatele punctului de start, setez o directie initiala de deplasare si permit marcarea drumului in labirint prin maze_we = 1
+**update** : modific coordonatele pozitiei indicate de directia anterior aleasa si permit citirea valorii inregistrare in aceasta pozitie prin maze_oe = 1
+**check** : pot verifica valoarea pozitiei in care ma aflu (in maze_in), daca am descoperit :
 - un perete (maze_in = 1), revin la pozitia anterioara si voi trece la directia urmatoare in sens trigonometric
 - un culoar (maze_in = 0), permit marcarea drumului, verific daca nu cumva am ajuns la iesire, aflandu-ma pe conturul labirintului si voi schimba directia in cea anterioara pentru a verifica daca am perete in dreapta
+
 Se trece de la starea update la check si invers atata timp cat nu am gasit iesirea din labirint (done = 1) .
+
 Am observat ca doar aceste stari sunt suficiente atat pentru a gasi iesirea dintre cei trei pereti, cat si pentru a ma orienta prin labirint, intrucat folosesc aceeasi logica de actualizare si verificare a datelor.
