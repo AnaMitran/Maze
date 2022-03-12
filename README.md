@@ -1,62 +1,62 @@
 # Maze
 Escaping a maze using Verilog
 
-Provocarea ridicata de problema “maze” este gasirea iesirii, aflata pe conturul labirintului. Stiu sigur ca pornesc de pe o pozitie libera si ca in jurul meu se afla 3 pereti, deci voi avea o singura iesire dintre acestia. Pentru a ma orienta mai departe folosesc algoritmul Wall Follower, ce presupune sa ma asigur ca am in permanenta perete in dreapta mea (sau stanga). Aceasta metoda garanteaza ca indiferent de aparatia infundaturilor si reluarea unor pasi, voi reusi sa gasesc intr-un final iesirea din labirint.
+The challenge posed by the "maze" problem is finding the exit, located on the outline of the maze. I know for sure that I start from a free position and that there are 3 walls around me, so I will have only one way out of them. In order to orient myself further, I use the Wall Follower algorithm, which means making sure that I always have a wall on my right (or left). This method guarantees that regardless of the appearance of the bottlenecks and the resumption of some steps, I will finally be able to find the way out of the labyrinth.
 
-Implementarea nu poate fi de tip brute force prin parcurgerea intregii matrici corespunzatoare labirintului si nu pot retine mai mult decat indicii pozitiei curente. Scenariul este similar cu deplasarea unei persoane cu incapaciatate de vedere. Trebuie sa ating peretele din dreapta pentru a sti sigur ca este acolo si ma voi lovi cu capul de peretele pe care eu l-am presupus culoar liber. Ceea ce imi aminteste de Minesweeper unde trebuia sa imi creez o stategie pentru a descoperi celulele din jurul meu fara a declansa o bomba. Si in cazul acestui joc, parcugeam din aproape in aproape, pentru a putea atinge scopul.
+The implementation cannot be of the brute force type by traversing the entire matrix corresponding to the labyrinth and cannot retain more than the indices of the current position. The scenario is similar to the movement of a visually impaired person. I have to touch the wall on the right to know for sure that it is there and I will hit my head on the wall that I assumed was a free lane. Which reminds me of Minesweeper where I had to create a strategy to discover the cells around me without detonating a bomb. And in the case of this game, I went from close to close, in order to reach the goal.
 
 ![image](https://user-images.githubusercontent.com/89164540/156737960-e4333ddc-2f0b-488b-b258-8c09dfa9d11c.png)
 
-Initial in labirint, scenariul arata asemanator cu:
+Initially in the maze, the script looks similar to:
 
 ![image](https://user-images.githubusercontent.com/89164540/157997870-bce2bdbb-0bed-43e8-a3a2-d6294e46a2b8.png)
 
 
-Primul task al meu este sa gasesc iesirea dintre cei 3 pereti.
-Cum fac asta? Ma ghidez dupa busola, adica dupa punctele cardinale (N, V, S, E) si retin de fiecare data directia in care m-am deplasat.
+My first task is to find the exit between the 3 walls.
+How do I do that? I am guided by the compass, that is, by the cardinal points (N, V, S, E) and I always remember the direction in which I moved.
 
-Stiind coordonatele punctului de start, voi putea sa imi determin noua pozitie in care m-am mutat, dupa directia X, intrucat incrementez sau decrementez linia sau coloana astfel:
+Knowing the coordinates of the starting point, I will be able to determine the new position in which I moved, according to the X direction, as I increment or decrement the row or column as follows:
 
 ![image](https://user-images.githubusercontent.com/89164540/157997881-a72f2842-bc87-401c-87c3-4b3dd08abb63.png)
 
 
-Pot porni inspre orice directie, insa pentru o buna practica pentru parcurgerea ulterioara a labirintului aleg urmatoarea directie in sens trigonometric.
+I can go in any direction, but for a good practice for the subsequent passage of the labyrinth I choose the next direction in trigonometric direction.
 
 ![image](https://user-images.githubusercontent.com/89164540/156738965-519bd825-10ef-4821-89d4-f1eef2d61f6f.png)
 
-De ce in sens trigonometric? Pentru ca astfel, dupa ce ies dintre cei 3 pereti, prioritizez verificarea valorii din dreapta, adica a existentei peretelui in dreapta. Daca am perete in dreapta, voi verifica in fata mea. In cazul in care in fata am un perete, verific daca pot iesi prin stanga si de-abia daca si atunci descopar ca am un perete si nu un culoar, ma intorc pe unde am venit, pentru ca este o fundatura.
+Why in a trigonometric sense? Because then, after coming out of the 3 walls, I prioritize checking the value on the right, ie the existence of the wall on the right. If I have a wall on the right, I'll check in front of me. If I have a wall in front of me, I check if I can go out to the left and only then do I discover that I have a wall and not a corridor, I go back to where I came from, because it is a dead end.
 
-Pentru a verifica ce exista in dreapta, aleg directia anterioara directiei de deplasare „in fata”.
+To check what is on the right, I choose the direction before the direction of travel "forward".
 
 ![image](https://user-images.githubusercontent.com/89164540/157997908-d4c70533-602d-490c-8ea0-371e199a3f1a.png)
 
 
-Sagetile negre indica directia de deplasare. De fiecare data cand descopar un perete, ma intorc la pozitia atenrioara, adica pe directia inversa de deplasare. Sagetile galbene indica sensul trigonometric de alegere a urmatoarei directii (S – E – N – W).
-Pentru a ma intoarce ma folosesc de regulile de schimbare a coordonatelor, prezentate mai sus si nu schimb efectiv directia, decat in sens trigonometric sau aleg directia anterioara pentru a verifica peretele in dreapta.
-In cazul in care in dreapta mea nu am peretele inseamna ca am trecut pe langa un colt din labirint. Totusi acest caz este similar cu situatia iesirii dintre primii 3 pereti.
+The black arrows indicate the direction of travel. Every time I discover a wall, I return to the back position, that is, in the reverse direction of travel. Yellow arrows indicate the trigonometric direction of the next direction (S - E - N - W).
+To go back I use the rules of changing the coordinates, presented above and I do not actually change the direction, except in trigonometric direction or I choose the previous direction to check the wall on the right.
+If I don't have the wall on my right, it means that I passed a corner of the labyrinth. However, this case is similar to the situation of the exit between the first 3 walls.
 
 ![image](https://user-images.githubusercontent.com/89164540/157997921-f371be59-a32f-455e-8eda-967402416639.png)
 
 
-Logica de implementare:
+Implementation logic:
 
 ![image](https://user-images.githubusercontent.com/89164540/157997935-e3d79856-9d11-495b-9ef2-69209918ebaf.png)
 
 
-Automatul finit determinist este de tip Moore (iesirea pe stare - aflu mereu informatia utila sau pot face modificari asupra labirintului doar la pasul urmator = urmatorul front crescator de ceas). Circuitul este de tip secvential sincron, cu parte combinationala de prelucrare/setare a datelor.
+The deterministic finite automaton is of the Moore type (exit on status - I always find useful information or I can make changes to the maze only at the next step = the next rising clockwise front). The circuit is of synchronous sequential type, with combinational part of data processing / setting. 
 
-Modulul are urmatoarea structura:
+The module has the following structure:
 
 ![image](https://user-images.githubusercontent.com/89164540/157997948-284d8ddc-1f22-42a4-a100-97b7347e586b.png)
 
-In fiecare stare, pot modifica fie maze_we pentru scriere in labirint, fie maze_oe pentru citire din labirint.
+In each state, they can change either maze_we for maze writing or maze_oe for maze reading.
 
-**set** : starea de pornire, salvez coordonatele punctului de start, setez o directie initiala de deplasare si permit marcarea drumului in labirint prin maze_we = 1
-**update** : modific coordonatele pozitiei indicate de directia anterior aleasa si permit citirea valorii inregistrare in aceasta pozitie prin maze_oe = 1
-**check** : pot verifica valoarea pozitiei in care ma aflu (in maze_in), daca am descoperit :
-- un perete (maze_in = 1), revin la pozitia anterioara si voi trece la directia urmatoare in sens trigonometric
-- un culoar (maze_in = 0), permit marcarea drumului, verific daca nu cumva am ajuns la iesire, aflandu-ma pe conturul labirintului si voi schimba directia in cea anterioara pentru a verifica daca am perete in dreapta
+**set**: start state, save the coordinates of the starting point, set an initial direction of travel and allow marking the path in the maze by maze_we = 1
+**update**: modify the coordinates of the position indicated by the previously chosen direction and allow the reading of the registration value in this position by maze_oe = 1
+**check**: I can check the value of my position (in maze_in), if I discovered:
+- a wall (maze_in = 1), I return to the previous position and I will move to the next direction in trigonometric direction
+- a corridor (maze_in = 0), I allow the marking of the road, I check if I have not reached the exit, I am on the contour of the labyrinth and I will change the direction in the previous one to check if I have a wall on the right
 
-Se trece de la starea update la check si invers atata timp cat nu am gasit iesirea din labirint (done = 1) .
+It goes from the update state to the check and vice versa as long as I did not find the way out of the maze (done = 1).
 
-Am observat ca doar aceste stari sunt suficiente atat pentru a gasi iesirea dintre cei trei pereti, cat si pentru a ma orienta prin labirint, intrucat folosesc aceeasi logica de actualizare si verificare a datelor.
+I noticed that only these states are enough both to find the exit between the three walls and to orient myself through the labyrinth, as they use the same logic of updating and verifying the data.
